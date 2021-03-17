@@ -16,6 +16,22 @@
     <converter:DictionaryKeyConverter x:Key="DictionaryKeyConverter" />
     <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
     <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <Style x:Key="TextBlockStyle"
+           TargetType="TextBlock">
+      <Setter Property="VerticalAlignment"
+              Value="Center" />
+      <Setter Property="Padding"
+              Value="8,6,8,6" />
+      <Setter Property="Width"
+              Value="60" />
+    </Style>
+    <Style x:Key="ComboBoxStyle"
+           TargetType="ComboBox">
+      <Setter Property="Margin"
+              Value="0,3,0,3" />
+      <Setter Property="Width"
+              Value="150" />
+    </Style>
   </Page.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -30,42 +46,30 @@
       <StackPanel Grid.Column="0"
                   Orientation="Vertical">
         <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center"
-                     Padding="8,6,8,6"
-                     Width="60"
+          <TextBlock Style="{StaticResource TextBlockStyle}"
                      Text="Sheet:" />
-          <ComboBox Margin="0,3,0,3"
-                    Width="150"
+          <ComboBox Style="{StaticResource ComboBoxStyle}"
                     ItemsSource="{Binding ExcelFile.Sheets, Converter={StaticResource DictionaryKeyConverter}}"
                     SelectedItem="{Binding Sheet}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center"
-                     Padding="8,6,8,6"
-                     Width="60"
+          <TextBlock Style="{StaticResource TextBlockStyle}"
                      Text="From:" />
-          <ComboBox Margin="0,3,0,3"
-                    Width="150"
+          <ComboBox Style="{StaticResource ComboBoxStyle}"
                     ItemsSource="{Binding WordDatabase.Languages}"
                     SelectedItem="{Binding From}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center"
-                     Padding="8,6,8,6"
-                     Width="60"
+          <TextBlock Style="{StaticResource TextBlockStyle}"
                      Text="To:" />
-          <ComboBox Margin="0,3,0,3"
-                    Width="150"
+          <ComboBox Style="{StaticResource ComboBoxStyle}"
                     ItemsSource="{Binding WordDatabase.Languages}"
                     SelectedItem="{Binding To}" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-          <TextBlock VerticalAlignment="Center"
-                     Padding="8,6,8,6"
-                     Width="60"
+          <TextBlock Style="{StaticResource TextBlockStyle}"
                      Text="Mode:" />
-          <ComboBox Margin="0,3,0,3"
-                    Width="150"
+          <ComboBox Style="{StaticResource ComboBoxStyle}"
                     ItemsSource="{Binding Modes}"
                     SelectedItem="{Binding Mode}">
             <ComboBox.ItemTemplate>
