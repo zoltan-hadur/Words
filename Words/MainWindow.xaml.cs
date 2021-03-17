@@ -29,7 +29,7 @@ namespace Words
     private void Window_Closing(object sender, CancelEventArgs e)
     {
       var wResult = MessageBox.Show("Are you sure you want to quit the application?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-      e.Cancel = wResult != MessageBoxResult.Yes;
+      e.Cancel = wResult == MessageBoxResult.No;
     }
   }
 }
