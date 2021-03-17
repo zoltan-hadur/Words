@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Words.View.MultipleChoiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Words.View"
+             xmlns:converter="clr-namespace:Words.Converter"
+             mc:Ignorable="d"
+             d:DesignHeight="121.44" d:DesignWidth="610"
+             FontSize="16"
+             Loaded="UserControl_Loaded"
+             Unloaded="UserControl_Unloaded">
+  <UserControl.Resources>
+    <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <converter:IndexConverter x:Key="IndexConverter" />
+    <Style TargetType="Button">
+      <Setter Property="Margin"
+              Value="8,8,8,8" />
+      <EventSetter Event="Click"
+                   Handler="ChoiceButton_Click" />
+      <Setter Property="Focusable"
+              Value="{Binding Answered, Converter={StaticResource InverseBooleanConverter}}" />
+    </Style>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition />
+      <ColumnDefinition />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Button x:Name="Choice0"
+            Grid.Row="0"
+            Grid.Column="0"
+            Tag="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=0}">
+      <TextBlock Text="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=0, FallbackValue='1) Choice', StringFormat='1) {0}'}" />
+    </Button>
+    <Button x:Name="Choice1"
+            Grid.Row="0"
+            Grid.Column="1"
+            Tag="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=1}">
+      <TextBlock Text="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=1, FallbackValue='2) Choice', StringFormat='2) {0}'}" />
+    </Button>
+    <Button x:Name="Choice2"
+            Grid.Row="1"
+            Grid.Column="0"
+            Tag="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=2}">
+      <TextBlock Text="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=2, FallbackValue='3) Choice', StringFormat='3) {0}'}" />
+    </Button>
+    <Button x:Name="Choice3"
+            Grid.Row="1"
+            Grid.Column="1"
+            Tag="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=3}">
+      <TextBlock Text="{Binding Choices, Converter={StaticResource IndexConverter}, ConverterParameter=3, FallbackValue='4) Choice', StringFormat='4) {0}'}" />
+    </Button>
+  </Grid>
+</UserControl>
