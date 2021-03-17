@@ -32,31 +32,11 @@ namespace Words.View
     {
       InitializeComponent();
       ViewModel = new SettingsVM();
-      vrMustBeWithin.Min = 1;
-      vrMustBeWithin.Max = ViewModel.WordDatabase.Words.Count;
     }
 
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
       btnStart.Focus();
-      ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-    }
-
-    private void Page_Unloaded(object sender, RoutedEventArgs e)
-    {
-      ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
-    }
-
-    private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      switch (e.PropertyName)
-      {
-        case nameof(ViewModel.WordDatabase):
-          vrMustBeWithin.Min = 1;
-          vrMustBeWithin.Max = ViewModel.WordDatabase.Words.Count;
-          txtWantedWordsCount.GetBindingExpression(TextBox.TextProperty).UpdateSource();
-          break;
-      }
     }
 
     private void btnStart_Click(object sender, RoutedEventArgs e)

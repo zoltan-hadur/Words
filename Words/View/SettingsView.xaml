@@ -11,8 +11,7 @@
       Height="200"
       Title="SettingsView"
       FontSize="16"
-      Loaded="Page_Loaded"
-      Unloaded="Page_Unloaded">
+      Loaded="Page_Loaded">
   <Page.Resources>
     <converter:DictionaryKeyConverter x:Key="DictionaryKeyConverter" />
     <converter:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
@@ -100,6 +99,7 @@
                    Padding="8,5,8,5"
                    Text="{Binding WordDatabase.Words.Count, StringFormat='Number of words in total: {0}', FallbackValue='Number of words in total: 1337'}" />
         <StackPanel Orientation="Horizontal">
+          <FrameworkElement x:Name="dummyElement" Visibility="Collapsed"/>
           <TextBlock VerticalAlignment="Center"
                      Padding="8,5,8,5"
                      Text="Number of words you want: " />
@@ -111,9 +111,11 @@
                        Mode="TwoWay"
                        UpdateSourceTrigger="PropertyChanged">
                 <Binding.ValidationRules>
-                  <rule:MustBeWithinValidationRule x:Name="vrMustBeWithin"
-                                                   ValidationStep="UpdatedValue"
-                                                   ValidatesOnTargetUpdated="True"/>
+                  <rule:MustBeWithinRangeValidationRule ValidationStep="UpdatedValue"
+                                                        ValidatesOnTargetUpdated="True">
+                    <rule:Range Min="1"
+                                Max="{Binding DataContext.WordDatabase.Words.Count, Source={x:Reference dummyElement}}" />
+                  </rule:MustBeWithinRangeValidationRule>
                 </Binding.ValidationRules>
               </Binding>
             </TextBox.Text>
