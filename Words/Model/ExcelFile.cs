@@ -12,34 +12,26 @@ namespace Words.Model
 {
   public class ExcelFile
   {
-    public IReadOnlyDictionary<string, WordDatabase> Sheets { get; }
+    public IReadOnlyDictionary<string, WordDatabase> Sheets { get; }  // Each sheet is a word database
 
     public ExcelFile(string path)
     {
       Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
       using (var wStream = File.Open(path, FileMode.Open, FileAccess.Read))
+      using (var wReader = ExcelReaderFactory.CreateReader(wStream))
+      using (var wDataSet = wReader.AsDataSet(new ExcelDataSetConfiguration() { ConfigureDataTable = wExcelReader => new ExcelDataTableConfiguration() { UseHeaderRow = true } }))
       {
-        using (var wReader = ExcelReaderFactory.CreateReader(wStream))
-        {
-          var wDataSet = wReader.AsDataSet(new ExcelDataSetConfiguration()
+        Sheets = wDataSet.Tables.Cast<DataTable>()
+          .ToDictionary(wTable => wTable.TableName, wTable =>
           {
-            ConfigureDataTable = _ => new ExcelDataTableConfiguration()
-            {
-              UseHeaderRow = true
-            }
+            var wLanguages = wTable.Columns.Cast<DataColumn>()
+              .Select(wDataColumn => wDataColumn.ColumnName)
+              .ToList();
+            var wWords = wTable.Rows.Cast<DataRow>()
+              .Select(wDataRow => wDataRow.ItemArray.Cast<string>().ToList())
+              .ToList();
+            return new WordDatabase(wLanguages, wWords);
           });
-          Sheets = wDataSet.Tables.Cast<DataTable>()
-            .ToDictionary(wTable => wTable.TableName, wTable =>
-            {
-              var wLanguages = wTable.Columns.Cast<DataColumn>()
-                .Select(wDataColumn => wDataColumn.ColumnName)
-                .ToList();
-              var wWords = wTable.Rows.Cast<DataRow>()
-                .Select(wDataRow => wDataRow.ItemArray.Cast<string>().ToList())
-                .ToList();
-              return new WordDatabase(wLanguages, wWords);
-            });
-        }
       }
     }
   }
