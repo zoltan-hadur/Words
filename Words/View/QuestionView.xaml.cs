@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Words.ViewModel;
 
 namespace Words.View
@@ -57,10 +58,7 @@ namespace Words.View
         case nameof(ViewModel.IsAnswered):
           if (ViewModel.IsAnswered)
           {
-            Dispatcher.BeginInvoke((Action)(() =>
-            {
-              btnNext.Focus();
-            }));
+            Dispatcher.BeginInvoke(() => { btnNext.Focus(); }, DispatcherPriority.ApplicationIdle);
           }
           break;
       }
@@ -68,7 +66,7 @@ namespace Words.View
 
     private void btnNext_Click(object sender, RoutedEventArgs e)
     {
-      if (ViewModel.IsLastQuestion())
+      if (ViewModel.HasMoreQuestion())
       {
         ViewModel.NextQuestion();
       }

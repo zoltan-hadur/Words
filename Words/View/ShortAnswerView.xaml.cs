@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Words.ViewModel;
 
 namespace Words.View
@@ -52,42 +53,28 @@ namespace Words.View
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-      if (e.PropertyName == nameof(ViewModel.Answered))
+      switch (e.PropertyName)
       {
-        if (!ViewModel.Answered)
-        {
+        case nameof(ViewModel.Answer):
+          // If the question changes, clear the previous answer
           txtAnswer.Text = string.Empty;
-          btnCheckAnswer.ClearValue(BackgroundProperty);
-          txtAnswer.Focus();
-        }
+          Dispatcher.BeginInvoke(() => { txtAnswer.Focus(); }, DispatcherPriority.ApplicationIdle);
+          break;
       }
     }
 
-    private void CheckAnswer()
-    {
-      if (txtAnswer.Text == ViewModel.Answer)
-      {
-        ViewModel.IsCorrect = true;
-        btnCheckAnswer.Background = Brushes.Green;
-      }
-      else
-      {
-        btnCheckAnswer.Background = Brushes.Red;
-      }
-      ViewModel.Answered = true;
-    }
-
+    // Allows to "click" the check button by pressing enter on the keyboard
     private void txtAnswer_KeyDown(object sender, KeyEventArgs e)
     {
       if (e.Key == Key.Enter)
       {
-        CheckAnswer();
+        btnCheckAnswer_Click(btnCheckAnswer, new RoutedEventArgs());
       }
     }
 
     private void btnCheckAnswer_Click(object sender, RoutedEventArgs e)
     {
-      CheckAnswer();
+      ViewModel.Check(txtAnswer.Text);
     }
   }
 }

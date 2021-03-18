@@ -28,12 +28,12 @@ namespace Words.View
       set => DataContext = value;
     }
 
-    private Button[] mChoices;
+    private List<Button> mChoices;  // Reference to the 4 choice button
 
     public MultipleChoiceView()
     {
       InitializeComponent();
-      mChoices = new Button[] { Choice0, Choice1, Choice2, Choice3 };
+      mChoices = new List<Button>() { Choice0, Choice1, Choice2, Choice3 };
     }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -62,15 +62,15 @@ namespace Words.View
 
     private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-      if (e.PropertyName == nameof(ViewModel.Answered))
+      switch (e.PropertyName)
       {
-        if (!ViewModel.Answered)
-        {
+        // If the question changes, clear the background color for all choice button
+        case nameof(ViewModel.Answer):
           foreach (var wButton in mChoices)
           {
             wButton.ClearValue(BackgroundProperty);
           }
-        }
+          break;
       }
     }
 
@@ -79,40 +79,37 @@ namespace Words.View
       var wButton = sender as Button;
       if (wButton != null)
       {
-        if (wButton.Tag as string == ViewModel.Answer)
+        // Check if our choice is the correct answer or not
+        ViewModel.Check(Convert.ToInt32(wButton.Tag));
+        // If correct, indicate it with a green color
+        if (ViewModel.IsCorrect)
         {
-          ViewModel.IsCorrect = true;
           wButton.Background = Brushes.Green;
         }
+        // Otherwise, indicate it with a red color, and make the correct choice button green to indicate which choice button was the correct answer
         else
         {
           wButton.Background = Brushes.Red;
-          var wAnswerButton = mChoices.Single(x => x.Tag as string == ViewModel.Answer);
-          wAnswerButton.Background = Brushes.Green;
+          mChoices[ViewModel.Choices.FindIndex(wChoice => wChoice == ViewModel.Answer)].Background = Brushes.Green;
         }
-        ViewModel.Answered = true;
       }
     }
 
+    // Allows to "click" the buttons by pressing their number on the keyboard
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
       switch (e.Key)
       {
         case Key.D1:
-        case Key.NumPad1:
-          ChoiceButton_Click(mChoices[0], new RoutedEventArgs());
-          break;
         case Key.D2:
-        case Key.NumPad2:
-          ChoiceButton_Click(mChoices[1], new RoutedEventArgs());
-          break;
         case Key.D3:
-        case Key.NumPad3:
-          ChoiceButton_Click(mChoices[2], new RoutedEventArgs());
-          break;
         case Key.D4:
+        case Key.NumPad1:
+        case Key.NumPad2:
+        case Key.NumPad3:
         case Key.NumPad4:
-          ChoiceButton_Click(mChoices[3], new RoutedEventArgs());
+          var wIndex = Convert.ToInt32(e.Key.ToString().Last().ToString()) - 1;
+          ChoiceButton_Click(mChoices[wIndex], new RoutedEventArgs());
           break;
       }
     }

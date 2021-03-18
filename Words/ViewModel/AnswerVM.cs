@@ -12,36 +12,48 @@ namespace Words.ViewModel
     public string Answer
     {
       get => mAnswer;
-      set => Set(ref mAnswer, value);
+      private set => Set(ref mAnswer, value);
     }
 
-    private string[] mChoices;
-    public string[] Choices
+    private List<string> mChoices;
+    public List<string> Choices
     {
       get => mChoices;
-      set => Set(ref mChoices, value);
+      private set => Set(ref mChoices, value);
     }
 
     private bool mAnswered;
     public bool Answered
     {
       get => mAnswered;
-      set => Set(ref mAnswered, value);
+      private set => Set(ref mAnswered, value);
     }
 
     private bool mIsCorrect;
     public bool IsCorrect
     {
       get => mIsCorrect;
-      set => Set(ref mIsCorrect, value);
+      private set => Set(ref mIsCorrect, value);
     }
 
-    public AnswerVM(string answer, string[] choices)
+    public AnswerVM(string answer, List<string> choices)
     {
       Reset(answer, choices);
     }
 
-    public void Reset(string answer, string[] choices)
+    public void Check(int choice)
+    {
+      IsCorrect = Choices[choice] == Answer;
+      Answered = true;
+    }
+
+    public void Check(string answer)
+    {
+      IsCorrect = answer == Answer;
+      Answered = true;
+    }
+
+    public void Reset(string answer, List<string> choices)
     {
       Answer = answer;
       Choices = choices;

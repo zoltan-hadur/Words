@@ -33,13 +33,44 @@
               Padding="5,5,5,5"
               Content="Check"
               Focusable="{Binding Answered, Converter={StaticResource InverseBooleanConverter}}"
-              Click="btnCheckAnswer_Click" />
+              Click="btnCheckAnswer_Click">
+        <Button.Style>
+          <Style TargetType="Button">
+            <Style.Triggers>
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Answered}"
+                             Value="True" />
+                  <Condition Binding="{Binding IsCorrect}"
+                             Value="False" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.Setters>
+                  <Setter Property="Background"
+                          Value="Red" />
+                </MultiDataTrigger.Setters>
+              </MultiDataTrigger>
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                  <Condition Binding="{Binding Answered}"
+                             Value="True" />
+                  <Condition Binding="{Binding IsCorrect}"
+                             Value="True" />
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.Setters>
+                  <Setter Property="Background"
+                          Value="Green" />
+                </MultiDataTrigger.Setters>
+              </MultiDataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+      </Button>
     </StackPanel>
     <TextBlock Grid.Row="2"
                HorizontalAlignment="Center"
                Foreground="Red">
       <Run Text="Correct answer is: " /><!--
-   --><Run Text="{Binding Answer, FallbackValue='Asztal'}"
+   --><Run Text="{Binding Answer, Mode=OneWay, FallbackValue='Asztal'}"
            FontWeight="Bold" />
       <TextBlock.Style>
         <Style TargetType="TextBlock">

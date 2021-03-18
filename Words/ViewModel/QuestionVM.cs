@@ -66,7 +66,7 @@ namespace Words.ViewModel
       {
         Word = wCandidate[wFromIndex],
         Answer = wCandidate[wToIndex],
-        Choices = wAllChoice.Where(wChoice => wChoice != wCandidate[wToIndex]).Shuffle().Take(3).Append(wCandidate[wToIndex]).Shuffle().ToArray(),
+        Choices = wAllChoice.Where(wChoice => wChoice != wCandidate[wToIndex]).Shuffle().Take(3).Append(wCandidate[wToIndex]).Shuffle().ToList(),
       }).ToList().AsReadOnly();
       CurrentQuestionIndex = 0;
       CurrentQuestion = mQuestions[CurrentQuestionIndex];
@@ -91,7 +91,7 @@ namespace Words.ViewModel
       }
     }
 
-    public bool IsLastQuestion()
+    public bool HasMoreQuestion()
     {
       return CurrentQuestionIndex < SettingsVM.WantedWordCount - 1;
     }

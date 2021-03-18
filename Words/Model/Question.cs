@@ -10,6 +10,6 @@ namespace Words.Model
   {
     public string Word { get; set; }
     public string Answer { get; set; }
-    public string[] Choices { get; set; }
+    public List<string> Choices { get; set; }
   }
 }
