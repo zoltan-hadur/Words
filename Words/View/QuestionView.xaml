@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Words.View"
+      xmlns:selector="clr-namespace:Words.View.DataTemplateSelectors"
       xmlns:converter="clr-namespace:Words.Converter"
       mc:Ignorable="d" 
       Width="610"
@@ -15,6 +16,12 @@
   <Page.Resources>
     <converter:AddConverter x:Key="AddConverter" />
     <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    <DataTemplate x:Key="MultipleChoiceTemplate">
+      <local:MultipleChoiceView DataContext="{Binding}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ShortAnswerTemplate">
+      <local:ShortAnswerView DataContext="{Binding}" />
+    </DataTemplate>
   </Page.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -35,36 +42,12 @@
     </TextBlock>
     <Grid Grid.Row="1"
           IsHitTestVisible="{Binding IsAnswered, Converter={StaticResource InverseBooleanConverter}}">
-      <local:MultipleChoiceView DataContext="{Binding AnswerVM}">
-        <local:MultipleChoiceView.Style>
-          <Style TargetType="local:MultipleChoiceView">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding Path=DataContext.SettingsVM.Mode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}"
-                           Value="MultipleChoice">
-                <Setter Property="Visibility"
-                        Value="Visible" />
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </local:MultipleChoiceView.Style>
-      </local:MultipleChoiceView>
-      <local:ShortAnswerView DataContext="{Binding AnswerVM}">
-        <local:ShortAnswerView.Style>
-          <Style TargetType="local:ShortAnswerView">
-            <Setter Property="Visibility"
-                    Value="Collapsed" />
-            <Style.Triggers>
-              <DataTrigger Binding="{Binding Path=DataContext.SettingsVM.Mode, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Page}}}"
-                           Value="ShortAnswer">
-                <Setter Property="Visibility"
-                        Value="Visible" />
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </local:ShortAnswerView.Style>
-      </local:ShortAnswerView>
+      <ContentControl Content="{Binding AnswerVM}">
+        <ContentControl.ContentTemplateSelector>
+          <selector:QuestionTemplateSelector MultipleChoiceTemplate="{StaticResource MultipleChoiceTemplate}"
+                                             ShortAnswerTemplate="{StaticResource ShortAnswerTemplate}"/>
+        </ContentControl.ContentTemplateSelector>
+      </ContentControl>
     </Grid>
     <Grid Grid.Row="2">
       <Grid>

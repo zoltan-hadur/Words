@@ -68,7 +68,7 @@ namespace Words.ViewModel
       }).ToList().AsReadOnly();
       CurrentQuestionIndex = 0;
       CurrentQuestion = mQuestions[CurrentQuestionIndex];
-      AnswerVM = new AnswerVM(CurrentQuestion.Answer, CurrentQuestion.Choices);
+      AnswerVM = new AnswerVM(CurrentQuestion.Answer, CurrentQuestion.Choices, SettingsVM.Mode);
       AnswerVM.PropertyChanged += AnswerVM_PropertyChanged;
     }
 

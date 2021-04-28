@@ -8,6 +8,13 @@ namespace Words.ViewModel
 {
   public class AnswerVM : ViewModelBase
   {
+    private Mode mMode;
+    public Mode Mode
+    {
+      get => mMode;
+      set => Set(ref mMode, value);
+    }
+
     private string mAnswer;
     public string Answer
     {
@@ -36,9 +43,10 @@ namespace Words.ViewModel
       private set => Set(ref mIsCorrect, value);
     }
 
-    public AnswerVM(string answer, List<string> choices)
+    public AnswerVM(string answer, List<string> choices, Mode mode)
     {
       Reset(answer, choices);
+      Mode = mode;
     }
 
     public void Check(int choice)
