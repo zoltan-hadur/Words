@@ -42,14 +42,38 @@ namespace Words.ViewModel
     public string From
     {
       get => mFrom;
-      set => Set(ref mFrom, value);
+      set
+      {
+        if (value == mTo)
+        {
+          var wFrom = mFrom;
+          Set(ref mFrom, value);
+          To = wFrom;
+        }
+        else
+        {
+          Set(ref mFrom, value);
+        }
+      }
     }
 
     private string mTo;
     public string To
     {
       get => mTo;
-      set => Set(ref mTo, value);
+      set
+      {
+        if (value == mFrom)
+        {
+          var wTo = mTo;
+          Set(ref mTo, value);
+          From = wTo;
+        }
+        else
+        {
+          Set(ref mTo, value);
+        }
+      }
     }
 
     [JsonIgnore]
