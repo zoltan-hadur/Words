@@ -19,6 +19,10 @@ namespace Words.ViewModel
     }
 
     private IReadOnlyList<Question> mQuestions;
+    public IReadOnlyList<Question> Questions
+    {
+      get => mQuestions;
+    }
 
     private Question mCurrentQuestion;
     public Question CurrentQuestion
@@ -48,31 +52,24 @@ namespace Words.ViewModel
       private set => Set(ref mAnserVM, value);
     }
 
-    private int mGoodAnswers;
-    public int GoodAnswers
-    {
-      get => mGoodAnswers;
-      set => Set(ref mGoodAnswers, value);
-    }
-
     public QuestionVM(SettingsVM settingsVM)
     {
       SettingsVM = settingsVM;
       var wFromIndex = SettingsVM.WordDatabase.Languages.ToList().IndexOf(SettingsVM.From);
       var wToIndex = SettingsVM.WordDatabase.Languages.ToList().IndexOf(SettingsVM.To);
-      var wCandidates = SettingsVM.WordDatabase.Words.Shuffle().Take(SettingsVM.WantedWordCount).ToList();
-      var wAllChoice = SettingsVM.WordDatabase.Words.Select(wWords => wWords[wToIndex]);
+      var wCandidates = SettingsVM.WordDatabase.Words.GetRandomElements(SettingsVM.WantedWordCount).ToList();
+      var wAllChoice = SettingsVM.WordDatabase.Words.Select(wWords => wWords.Item[wToIndex]);
       mQuestions = wCandidates.Select(wCandidate => new Question()
       {
-        Word = wCandidate[wFromIndex],
-        Answer = wCandidate[wToIndex],
-        Choices = wAllChoice.Where(wChoice => wChoice != wCandidate[wToIndex]).Shuffle().Take(3).Append(wCandidate[wToIndex]).Shuffle().ToList(),
+        Word = wCandidate.Item[wFromIndex],
+        Answer = wCandidate.Item[wToIndex],
+        Choices = wAllChoice.Where(wChoice => wChoice != wCandidate.Item[wToIndex]).Shuffle().Take(3).Append(wCandidate.Item[wToIndex]).Shuffle().ToList(),
+        Correct = false
       }).ToList().AsReadOnly();
       CurrentQuestionIndex = 0;
       CurrentQuestion = mQuestions[CurrentQuestionIndex];
       AnswerVM = new AnswerVM(CurrentQuestion.Answer, CurrentQuestion.Choices);
       AnswerVM.PropertyChanged += AnswerVM_PropertyChanged;
-      GoodAnswers = 0;
     }
 
     private void AnswerVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -85,7 +82,7 @@ namespace Words.ViewModel
         case nameof(AnswerVM.IsCorrect):
           if (AnswerVM.IsCorrect)
           {
-            GoodAnswers++;
+            CurrentQuestion.Correct = true;
           }
           break;
       }

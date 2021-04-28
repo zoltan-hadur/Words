@@ -74,8 +74,7 @@ namespace Words.View
       {
         NavigationService.Navigate(new ResultView(new ResultVM()
         {
-          Correct = ViewModel.GoodAnswers,
-          Total = ViewModel.SettingsVM.WantedWordCount,
+          Questions = ViewModel.Questions,
           SettingsVM = ViewModel.SettingsVM
         }));
       }

@@ -1,5 +1,4 @@
-﻿using ExcelDataReader;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -13,12 +12,12 @@ namespace Words.Model
   public class WordDatabase
   {
     public IReadOnlyList<string> Languages { get; }
-    public IReadOnlyList<IReadOnlyList<string>> Words { get; }
+    public ReadOnlyWeightedList<IReadOnlyList<string>> Words { get; }
 
-    public WordDatabase(IReadOnlyList<string> languages, IReadOnlyList<IReadOnlyList<string>> words)
+    public WordDatabase(IReadOnlyList<string> languages, IReadOnlyList<(IReadOnlyList<string> Words, double Weight)> words)
     {
       Languages = languages;
-      Words = words;
+      Words = new ReadOnlyWeightedList<IReadOnlyList<string>>(words);
     }
   }
 }
