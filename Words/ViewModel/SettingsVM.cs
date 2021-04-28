@@ -145,8 +145,12 @@ namespace Words.ViewModel
       {
         case nameof(Sheet):
           WordDatabase = ExcelFile.Sheets[Sheet];
-          From = WordDatabase.Languages.First();
-          To = WordDatabase.Languages.Skip(1).First();
+          if (!WordDatabase.Languages.Contains(From) ||
+              !WordDatabase.Languages.Contains(To))
+          {
+            From = WordDatabase.Languages.First();
+            To = WordDatabase.Languages.Skip(1).First();
+          }
           WantedWordCount = Math.Max(1, Math.Min(WantedWordCount, WordDatabase.Words.Count));
           break;
       }
