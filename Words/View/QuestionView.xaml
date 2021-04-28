@@ -30,14 +30,16 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <TextBlock Grid.Row="0"
-               Padding="8,8,8,8">
+               Padding="8,8,8,8"
+               TextTrimming="CharacterEllipsis">
       <Run Text="Translate the following word from " /><!--
    --><Run Text="{Binding SettingsVM.From, FallbackValue='Hungarian'}"/><!--
    --><Run Text=" to " /><!--
    --><Run Text="{Binding SettingsVM.To, FallbackValue='English'}"/><!--
    --><Run Text=": " /><!--
-   --><Run Text="{Binding CurrentQuestion.Word, FallbackValue='Asztal'}"
-           FontWeight="Bold" /><!--
+   --><Run Text="{Binding CurrentQuestion.Word, FallbackValue='Asztal123456789-123456789'}"
+           FontWeight="Bold"
+           ToolTip="{Binding CurrentQuestion.Word}"/><!--
    --><Run Text="." />
     </TextBlock>
     <Grid Grid.Row="1"
