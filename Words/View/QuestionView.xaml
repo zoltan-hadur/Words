@@ -44,7 +44,8 @@
     </TextBlock>
     <Grid Grid.Row="1"
           IsHitTestVisible="{Binding IsAnswered, Converter={StaticResource InverseBooleanConverter}}">
-      <ContentControl Content="{Binding AnswerVM}">
+      <ContentControl Content="{Binding AnswerVM}"
+                      IsTabStop="False">
         <ContentControl.ContentTemplateSelector>
           <selector:QuestionTemplateSelector MultipleChoiceTemplate="{StaticResource MultipleChoiceTemplate}"
                                              ShortAnswerTemplate="{StaticResource ShortAnswerTemplate}"/>
