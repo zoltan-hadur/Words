@@ -43,5 +43,25 @@ namespace Words.View
     {
       NavigationService.Navigate(new QuestionView(new QuestionVM(ViewModel)));
     }
+
+    private void ComboBox_KeyDown(object sender, KeyEventArgs e)
+    {
+      var wComboBox = sender as ComboBox;
+      if (wComboBox != null)
+      {
+        if (!wComboBox.IsDropDownOpen && (e.Key == Key.Enter || e.Key == Key.Space))
+        {
+          wComboBox.IsDropDownOpen = true;
+        }
+        else if (wComboBox.IsDropDownOpen && e.Key == Key.Space)
+        {
+          var wFocusedComboboxItem = Enumerable.Range(0, wComboBox.Items.Count)
+              .Select(wIndex => wComboBox.ItemContainerGenerator.ContainerFromIndex(wIndex) as ComboBoxItem)
+              .FirstOrDefault(wComboBoxItem => wComboBoxItem.IsKeyboardFocused);
+          wComboBox.SelectedItem = wFocusedComboboxItem.Content;
+          wComboBox.IsDropDownOpen = false;
+        }
+      }
+    }
   }
 }

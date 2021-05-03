@@ -31,6 +31,8 @@
               Value="0,3,0,3" />
       <Setter Property="Width"
               Value="150" />
+      <EventSetter Event="KeyDown"
+                   Handler="ComboBox_KeyDown" />
     </Style>
   </Page.Resources>
   <Grid>
