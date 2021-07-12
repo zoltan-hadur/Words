@@ -36,11 +36,11 @@ namespace Words.View
     private void Page_Loaded(object sender, RoutedEventArgs e)
     {
       btnRestart.Focus();
+      ViewModel.SaveResult();
     }
 
     private void btnRestart_Click(object sender, RoutedEventArgs e)
     {
-      ViewModel.SaveResult();
       NavigationService.Navigate(new SettingsView());
     }
   }

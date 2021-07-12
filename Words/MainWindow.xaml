@@ -10,7 +10,7 @@
         Closing="Window_Closing">
   <Grid>
     <Frame Width="610"
-           Height="200"
+           Height="230"
            Focusable="False"
            Source="View/SettingsView.xaml"
            NavigationUIVisibility="Hidden" />

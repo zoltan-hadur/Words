@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Words.View"
       mc:Ignorable="d" 
       Width="610"
-      Height="200"
+      Height="230"
       Title="ResultView"
       FontSize="16"
       Loaded="Page_Loaded">
@@ -14,18 +14,6 @@
     <StackPanel Orientation="Vertical"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0"
-                   Padding="8,8,8,8"
-                   Text="Name:"/>
-        <TextBox Grid.Column="1"
-                 Margin="0,5,0,5"
-                 Text="{Binding SettingsVM.Name}"/>
-      </Grid>
       <TextBlock Padding="8,8,8,8"
                  Text="{Binding Correct, StringFormat='Correct answer: {0}', FallbackValue='Correct answer: 5'}" />
       <TextBlock Padding="8,8,8,8"
