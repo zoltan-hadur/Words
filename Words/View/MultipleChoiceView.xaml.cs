@@ -98,6 +98,7 @@ namespace Words.View
     // Allows to "click" the buttons by pressing their number on the keyboard
     private void MainWindow_KeyDown(object sender, KeyEventArgs e)
     {
+      if (ViewModel == null || ViewModel.Answered) return;
       switch (e.Key)
       {
         case Key.D1:
