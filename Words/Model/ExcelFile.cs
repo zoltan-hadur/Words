@@ -44,17 +44,27 @@ namespace Words.Model
           }
         }
         Sheets = wExcelPackage.Workbook.Worksheets.ToDictionary(
-          wWorksheet => wWorksheet.Name,
-          wWorksheet => new WordDatabase(
-            wWorksheet.Cells["1:1"].SkipLast(1).Select(wCell => wCell.Text).ToList(),                             // Languages
-            Enumerable.Range(2, wWorksheet.Dimension.End.Row - 1)                                                 // All row index except first
-            .Select(wRowIndex => wWorksheet.Cells[$"{wRowIndex}:{wRowIndex}"])                                    // All row except first
-            .Where(wCells => wCells.Any() &&                                                                      // Only those rows whose actually contain any data
-                             wCells.All(wCell => !string.IsNullOrWhiteSpace(wCell.Text)))                         // And they are not null or whitespace
-            .Select(wCells => (wCells.SkipLast(1).Select(wCell => wCell.Text).ToList() as IReadOnlyList<string>,  // Words with same meaning in different languages
-                               wCells.Last().GetValue<double>())).ToList()                                        // Their weight
-            )
-          );
+          wWorksheet =>
+          {
+            return wWorksheet.Name;
+          },
+          wWorksheet =>
+          {
+            var wLanguages = wWorksheet.Cells["1:1"].SkipLast(1).Select(wCell => wCell.Text).ToList();
+            var wRows = Enumerable
+              .Range(2, wWorksheet.Dimension.End.Row - 1)                                                           // All row index except first
+              .Select(wRowIndex => wWorksheet.Cells[$"{wRowIndex}:{wRowIndex}"])                                    // All row except first
+              .ToList();
+            var wValidRows = wRows
+              .Where(wCells => wCells.Any() &&                                                                      // Only those rows whose actually contain any data
+                               wCells.All(wCell => !string.IsNullOrWhiteSpace(wCell.Text)))                         // And they are not null or whitespace
+              .ToList();
+            var wWords = wValidRows
+              .Select(wCells => (wCells.SkipLast(1).Select(wCell => wCell.Text).ToList() as IReadOnlyList<string>,  // Words with same meaning in different languages
+                                 wCells.Last().GetValue<double>()))                                                 // Their weight
+              .ToList();
+            return new WordDatabase(wLanguages, wWords);
+          });
         if (wFixed)
         {
           wExcelPackage.Save();
