@@ -20,7 +20,7 @@ namespace Words.Model
       using (var wExcelPackage = new ExcelPackage(new FileInfo(path)))
       {
         var wFixed = false;
-        foreach (var wWorksheet in wExcelPackage.Workbook.Worksheets)
+        foreach (var wWorksheet in wExcelPackage.Workbook.Worksheets.Where(wWorksheet => wWorksheet.Name != "STATS"))
         {
           // If there is no "Weight" column
           if (wWorksheet.Cells["1:1"].Last().Text != "Weight")
@@ -43,7 +43,7 @@ namespace Words.Model
             }
           }
         }
-        Sheets = wExcelPackage.Workbook.Worksheets.ToDictionary(
+        Sheets = wExcelPackage.Workbook.Worksheets.Where(wWorksheet => wWorksheet.Name != "STATS").ToDictionary(
           wWorksheet =>
           {
             return wWorksheet.Name;
